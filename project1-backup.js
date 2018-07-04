@@ -61,36 +61,61 @@ $(document).ready(function() {
     var searchResults = [];
  
     function searchGame(game) {
+      $.ajax ({
+        type: 'GET',
+        dataType: 'jsonp',
+        crossDomain: true,
+        jsonp: 'json_callback',
+        url: 'http://www.giantbomb.com/api/search/?format=jsonp&api_key=47d89cf2776025d8ace3e66e641a4eb8bd066fc5&query=' + game
+      }).done(function(data) {
+       var results = data.results
+       console.log(results)
+      for(i=0; i<6; i++){
+        var print = results[i].image.small_url;
+        console.log(print)
+        var image = $("<img src='" + print + "' />")
+        console.log(image)
+        
+      $("#search-results").append(image)
+      }
+      
+      }).fail(function() {
+      alert("error");
+      }).always(function() {
+  
+      });
+      //  var queryURL = "https://www.giantbomb.com/api/search/?api_key=47d89cf2776025d8ace3e66e641a4eb8bd066fc5&format=jsonp&query=" + game
+      //  $.ajax({
+      //     url: queryURL,
+      //     method: "GET",
+      //     dataType: 'jsonp',
+      //     crossDomain: true,
+      //     jsonp: 'json_callback'
+      //  }).then(function (response) {
+      //     // console.log(response)
+      //     // create a new list for the upcoming results
+      //     // var newList = $("<ul>");
+      //     // ("#search-results").append(newList);
+      //     // clear searchResults array
+      //     // searchResults = [""];
+      //     //  cycle through results
+      //     for (i = 0; i < response.length; i++) {
+      //        var newButton = $("<button>add to library</button>");
+      //        newButton.addClass("add-game");
+      //        newButton.val([i]);
+      //        var list = $("<li>");
+      //        var gameName = $("<h1>").text(response.name);
+      //        var gameImage = $("<img>").attr("src", response.thumb_url);
+      //        var gameInfo = $("<p>").text(response.deck);
+      //       console.log(gameName, gameImage, gameInfo);
+      //        // push game title to search array
+      //        searchResults.push(gameName); // this will only save the title. We could decide to save an image instead
  
-       var queryURL = "https://www.giantbomb.com/api/search/?api_key=47d89cf2776025d8ace3e66e641a4eb8bd066fc5&format=json&query=" + game + "&resources=game&format=json"
-       $.ajax({
-          url: queryURL,
-          method: "GET"
-       }).then(function (response) {
-          console.log(response)
-          // create a new list for the upcoming results
-          var newList = $("<ul>");
-          ("#search-results").append(newList);
-          // clear searchResults array
-          searchResults = [""];
-          //  cycle through results
-          for (i = 0; i < response.length; i++) {
-             var newButton = $("<button>" + "add to library" + "</button>");
-             newButton.addClass("add-game");
-             newButton.val([i]);
-             var list = $("<li>");
-             var gameName = $("<h1>").text(response.name);
-             var gameImage = $("<img>").attr("src", response.thumb_url);
-             var gameInfo = $("<p>").text(response.deck);
+      //        // prints game name, game image, game info, and an 'add to library' button to DIV
+      //        $("#search-results").append(list, gameName, gameImage, gameInfo, newButton);
+      //     }
  
-             // push game title to search array
-             searchResults.push(gameName); // this will only save the title. We could decide to save an image instead
- 
-             // prints game name, game image, game info, and an 'add to library' button to DIV
-             $("#search-results").append(list, gameName, gameImage, gameInfo, newButton);
-          }
- 
-       })
+      //  })
       }
        // game search input+++++++++++++++++++++++++++++++++++++++++
       
@@ -114,6 +139,51 @@ $(document).ready(function() {
        // store within firebase
        
     })
+
+    $.ajax({
+
+      // The 'type' property sets the HTTP method.
+      // A value of 'PUT' or 'DELETE' will trigger a preflight request.
+      type: 'GET',
+    
+      // The URL to make the request to.
+      url: 'http://html5rocks-cors.s3-website-us-east-1.amazonaws.com/index.html',
+    
+      // The 'contentType' property sets the 'Content-Type' header.
+      // The JQuery default for this property is
+      // 'application/x-www-form-urlencoded; charset=UTF-8', which does not trigger
+      // a preflight. If you set this value to anything other than
+      // application/x-www-form-urlencoded, multipart/form-data, or text/plain,
+      // you will trigger a preflight request.
+      contentType: 'text/plain',
+    
+      xhrFields: {
+        // The 'xhrFields' property sets additional fields on the XMLHttpRequest.
+        // This can be used to set the 'withCredentials' property.
+        // Set the value to 'true' if you'd like to pass cookies to the server.
+        // If this is enabled, your server must respond with the header
+        // 'Access-Control-Allow-Credentials: true'.
+        withCredentials: false
+      },
+    
+      headers: {
+        // Set any custom headers here.
+        // If you set any non-simple headers, your server must include these
+        // headers in the 'Access-Control-Allow-Headers' response header.
+      },
+    
+      success: function() {
+        // Here's where you handle a successful response.
+      },
+    
+      error: function() {
+        // Here's where you handle an error response.
+        // Note that if the error was due to a CORS issue,
+        // this function will still fire, but there won't be any additional
+        // information about the error.
+      }
+    });
+    
  
 
     // giantbomb API end <<<=================================================================
@@ -188,3 +258,5 @@ $(document).ready(function() {
  
  */
  
+
+
