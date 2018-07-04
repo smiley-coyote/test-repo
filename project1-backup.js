@@ -19,126 +19,69 @@ $(document).ready(function() {
  
  
  
-   //  // Steam api =========================================================================================================================
-   //  function getSteamId(steamId) {
-   //     // Fetch steam user ID number
-   //     var queryURL = "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=597FC535B0A81C139B5227A808EAA15B&vanityurl=" + steamId
-   //     $.ajax({
-   //        url: queryURL,
-   //        method: "GET"
-   //     }).then(function (response) {
-   //        steamNumber = response.steamid;
-   //        getSteamProfile(steamNumber);
-   //     })
-   //  }
-   //  $(document).on("click", "steam-id", function (event) {
-   //     event.prevendDefault();
-   //     var steamId = $("#steam-id-input").val().trim();
-   //     addGames(steamId);
-   //  })
+     // Steam api =========================================================================================================================
+    function getSteamId(steamId) {
+       // Fetch steam user ID number
+       var queryURL = "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=597FC535B0A81C139B5227A808EAA15B&vanityurl=" + steamId
+       $.ajax({
+          url: queryURL,
+          method: "GET"
+       }).then(function (data) {
+        
+          steamNumber = data.response.steamid;
+        
+          getSteamProfile(steamNumber);
+          
+       })
+    }
+    $("#steam-submit").on("click", function(){
+       event.preventDefault();
+       var steamId = $("#steam-input").val().trim();
+       
+      getSteamId(steamId);
+    })
  
  
-   //  // Fetch steam user profile page
+    // Fetch steam user profile page
  
-   //  // nick's steam ID for testing purposes: 76561197972752173
+    // nick's steam ID for testing purposes: 76561197972752173
  
-   //  function getSteamProfile(steamNumber) {
-   //     var queryURL = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=597FC535B0A81C139B5227A808EAA15B&steamids=" + steamNumber;
-   //     $.ajax({
-   //        url: queryURL,
-   //        method: "GET"
-   //     }).then(function (response) {
- 
-   //     })
-   //  }
+    function getSteamProfile(number) {
+       var queryURL = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=597FC535B0A81C139B5227A808EAA15B&steamids=" + number;
+       $.ajax({
+          url: queryURL,
+          method: "GET"
+       }).then(function (data) {
+
+
+        var avatar = data.response.players[0].avatarmedium;
+        var playerOnline;
+        var image = $("<img src='" + avatar + "' />")
+        var name = $("<h3>").text(data.response.players[0].personaname)
+        var lastLogOff = data.response.players[0].lastlogoff;
+        var newDate = $.parseJSON(lastLogOff);
+        var formatDate = new Date(1000*newDate);
+        var lastOnline = $("<p>").text("Last online: " + formatDate);
+        // check if online 
+        var online = data.response.players[0].personastate;
+        if (online === 0){
+          online = "no";
+        } else if (online === 1){
+          online = "yes";
+        }
+       playerOnline = $("<p>").text("online: " + online)
+       
+        $("#steam-div").append(image, name, playerOnline, lastOnline);
+       })
+    }
+
+
+   
     // ==================================================================================================================================
  
     // xboxAPI key 40687e73c58e72dd8d225be86a8a11de96b04dda
  
-    // giantbomb API start =================================================================>>>
-
-    var gameLibrary = [];
-    var searchResults = [];
- 
-    function searchGame(game) {
-      $.ajax ({
-        type: 'GET',
-        dataType: 'jsonp',
-        crossDomain: true,
-        jsonp: 'json_callback',
-        url: 'https://www.giantbomb.com/api/search/?format=jsonp&api_key=47d89cf2776025d8ace3e66e641a4eb8bd066fc5&query=' + game
-      }).done(function(data) {
-       var results = data.results
-       console.log(results)
-      for(i=0; i<6; i++){
-        var print = results[i].image.small_url;
-        console.log(print)
-        var image = $("<img src='" + print + "' />")
-        console.log(image)
-        
-      $("#search-results").append(image)
-      }
-      
-      }).fail(function() {
-      alert("error");
-      }).always(function() {
-  
-      });
-      //  var queryURL = "https://www.giantbomb.com/api/search/?api_key=47d89cf2776025d8ace3e66e641a4eb8bd066fc5&format=jsonp&query=" + game
-      //  $.ajax({
-      //     url: queryURL,
-      //     method: "GET",
-      //     dataType: 'jsonp',
-      //     crossDomain: true,
-      //     jsonp: 'json_callback'
-      //  }).then(function (response) {
-      //     // console.log(response)
-      //     // create a new list for the upcoming results
-      //     // var newList = $("<ul>");
-      //     // ("#search-results").append(newList);
-      //     // clear searchResults array
-      //     // searchResults = [""];
-      //     //  cycle through results
-      //     for (i = 0; i < response.length; i++) {
-      //        var newButton = $("<button>add to library</button>");
-      //        newButton.addClass("add-game");
-      //        newButton.val([i]);
-      //        var list = $("<li>");
-      //        var gameName = $("<h1>").text(response.name);
-      //        var gameImage = $("<img>").attr("src", response.thumb_url);
-      //        var gameInfo = $("<p>").text(response.deck);
-      //       console.log(gameName, gameImage, gameInfo);
-      //        // push game title to search array
-      //        searchResults.push(gameName); // this will only save the title. We could decide to save an image instead
- 
-      //        // prints game name, game image, game info, and an 'add to library' button to DIV
-      //        $("#search-results").append(list, gameName, gameImage, gameInfo, newButton);
-      //     }
- 
-      //  })
-      }
-       // game search input+++++++++++++++++++++++++++++++++++++++++
-      
-       $("#search-game").on("click", function() {
-          event.preventDefault();
-          var inputGame = $("#search-input").val().trim();
-          console.log(inputGame)
-        searchGame(inputGame)
-       })
-      
- 
-    // add game to library
-    $(document).on("click", ".add-game", function () {
-       event.preventDefault(); 
-       var x = $(this).val(); //grabs value that will match location within array and assigns to a new variable
-       var newGame = searchResults[x]; //grabs game title from searchResults array
-       console.log(newGame);
-       gameLibrary.push(newGame); //adds to libray variable
-       
-       $("#game-div").push()
-       // store within firebase
-       
-    })
+   
 
     // $.ajax({
 
