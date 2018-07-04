@@ -22,7 +22,7 @@ $(document).ready(function() {
      // Steam api =========================================================================================================================
     function getSteamId(steamId) {
        // Fetch steam user ID number
-       var queryURL = "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=597FC535B0A81C139B5227A808EAA15B&vanityurl=" + steamId
+       var queryURL = "https://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=597FC535B0A81C139B5227A808EAA15B&vanityurl=" + steamId
        $.ajax({
           url: queryURL,
           method: "GET"
@@ -47,7 +47,7 @@ $(document).ready(function() {
     // nick's steam ID for testing purposes: 76561197972752173
  
     function getSteamProfile(number) {
-       var queryURL = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=597FC535B0A81C139B5227A808EAA15B&steamids=" + number;
+       var queryURL = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=597FC535B0A81C139B5227A808EAA15B&steamids=" + number;
        $.ajax({
           url: queryURL,
           method: "GET"
