@@ -5,18 +5,29 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <title>proj-test</title>
-  
+       <!-- You can use Open Graph tags to customize link previews.
+    Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
+  <meta property="og:url"           content="https://smiley-coyote.github.io/test-repo/proj-text.html" />
+  <meta property="og:type"          content="website" />
+  <meta property="og:title"         content="Gamer Tagged" />
+  <meta property="og:description"   content="Your description" />
+  <meta property="og:image"         content="https://smiley-coyote.github.io/test-repo/proj-text.html" />
 </head>
 <body>
-   <form>
-      <input type="text" id="steam-input">
-      <button type="submit" id="steam-submit">submit</button>
-   </form>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
 
-   <div id="steam-results"></div>
-   <div id="steam-div"></div>
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+  <div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
 
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="project1-backup.js"></script>
+<!-- <script src="canvas.min.js"></script> -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- <script src="javacanvas.js"></script> -->
+
 </html>
